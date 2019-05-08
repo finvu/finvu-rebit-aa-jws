@@ -47,7 +47,7 @@ We use Json Web Signature (JWS) method to sign the content, as descirbed in RFC7
 
 As described in the RFC, a JWS contains 3 sections, i.e. A header, the content and the signature. All sections are base64 encoded. JWS is typically transmitted in JSON Serialization format, which is represented as 3 base64 encodes strings as a continuous string, each string separated by a dot.
 
-As per the REBIT specis, the content is already being sent in the http body of the message, hence including content in the JWS will be  duplication of data and inefficient.
+As per the REBIT specifications, the content is already being sent in the http body of the message, hence including content in the JWS will be  duplication of data and inefficient.
 
 Another option would be to send the JWS itself as the body of the http message, however it obfuscates the message and renders debugging quite difficult.
 
@@ -68,7 +68,7 @@ Examples can be seen in section 4.5 of rfc7520 here: https://tools.ietf.org/html
 
 For both the methods explained below, Detached Content signatures are used.
 
-### Method 1 - Embed signature within the content before sending the message
+### Method 1 - Embed signature within the content before sending the message:
 
 In this method, following steps are performed:
 
@@ -79,7 +79,7 @@ In this method, following steps are performed:
 
 On the receiving side, following steps are performed:
 * First the content is parsed into object form
-* The detached signature is then extracted
+* The signature is then extracted
 * The signature is set to null in the parsed object, and serialized for verification
 * The serialized content and the extracted signature is then used to validate the signature.
 
@@ -117,7 +117,7 @@ This method generates the content as follows:
 
 ### Method 2 - Send content in the http body, send signature in http header:
 
-In this method, the content is sent as is in the body of the http message, and the signature us sent separately in customized http header of the same message.
+In this method, the content is sent as is in the body of the http message, and the signature is sent separately in customized http header of the same message.
 
 Open banking uses x-jws-signature as the http header to set the signature.
 
