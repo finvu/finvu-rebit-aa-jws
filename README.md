@@ -124,6 +124,7 @@ Open banking uses x-jws-signature as the http header to set the signature.
 This method has several advantages:
 
 * request/responses that that have badly formatted x-jws-signature header can be rejected before ever reading the full HTTP body
+* The http body need not be parsed to validate signature
 * Gives more options to keep the message signing away from business logic as the HTTP body needs no manipulation
 * No unnecessary serialization/deserialization of objects for generating and embeddeding signature when compared to option 1
 
