@@ -1,5 +1,17 @@
 package com.ctpl.rebit.aa.jws.test;
 
+import com.ctpl.rebit.aa.consent.Account;
+import com.ctpl.rebit.aa.consent.Category;
+import com.ctpl.rebit.aa.consent.ConsentDetail;
+import com.ctpl.rebit.aa.consent.ConsentResponse;
+import com.ctpl.rebit.aa.consent.ConsentUse;
+import com.ctpl.rebit.aa.consent.Customer;
+import com.ctpl.rebit.aa.consent.DataConsumer;
+import com.ctpl.rebit.aa.consent.DataFilter;
+import com.ctpl.rebit.aa.consent.DataLife;
+import com.ctpl.rebit.aa.consent.DataProvider;
+import com.ctpl.rebit.aa.consent.Frequency;
+import com.ctpl.rebit.aa.consent.Purpose;
 import com.ctpl.rebit.aa.firequest.FIRequest;
 import com.ctpl.rebit.aa.jws.JWSSignatureUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -60,11 +72,14 @@ public class JWSSignatureTest {
 
 	public static void main(String[] args) throws Exception {
 		
-		System.out.println("Testing Embedded, detached signature:");
+		System.out.println("###### Testing Embedded, detached signature:");
 		testEmbeddedDetached();
 		
-		System.out.println("Testing true detached signature:");
+		System.out.println("\n\n###### Testing true detached signature:");
 		testTrueDetached();
+		
+		System.out.println("\n\n###### Testing consent signature:");
+		testConsentSignature();
 	}
 	
 	/**
@@ -184,6 +199,158 @@ public class JWSSignatureTest {
 		
 		System.out.println("Request to vaidate is: " + bodyToSign);
 		System.out.println("Signature valid?: " + util.validateSign(signature, bodyToSign));
+	}
+	
+	/**
+	 * The Detached content signature can be used for signing and validating consent artefacts as well.
+	 * 
+	 * The following illustrates typical steps.
+	 * 
+	 * 1. The sender prepares consent response object
+	 * 2. The sender prepares consent artefact object.
+	 * 3. The sender generates text of the consent artefact, and generates signature.
+	 * 4. The sender sets the consent artefact and the signature to the response object.
+	 * 5. The sender generates text of the response and sends it to receiver.
+	 * 
+	 * On the receiving side:
+	 * 
+	 * 1. The receiver parses the response received into object.
+	 * 2. The receiver extract the consent artefact and the signature
+	 * 3. The receiver generates text of the consent artefact object
+	 * 4. The receiver validates the consent artefact text with the signature
+	 * 
+	 * 
+	 * @throws Exception
+	 */	
+	public static void testConsentSignature() throws Exception {
+		
+		ObjectMapper mapper = new ObjectMapper();
+		
+		// Create the response object (for demo purpose)
+		
+		ConsentResponse response = new ConsentResponse();
+		
+		response.setVer("1.0");
+		response.setTxnid("0b811819-9044-4856-b0ee-8c88035f8858");
+		response.setConsentId("XXXX-XXXX-XXXX-XXXX");
+		response.setStatus("ACTIVE");
+		response.setCreateTimestamp("2018-12-06T11:39:57.153Z");
+		
+		// Create the consent artefact for signing.
+		ConsentDetail consentDetail = new ConsentDetail();
+		
+		consentDetail.setConsentStart("2019-12-06T11:39:57.153Z");
+		consentDetail.setConsentExpiry("2019-12-06T11:39:57.153Z");
+		consentDetail.setConsentMode("VIEW");
+		consentDetail.setFetchType("ONETIME");
+		consentDetail.addConsentType("BALANCE");
+		consentDetail.addFitype("DEPOSIT");
+		
+		DataConsumer dataConsumer = new DataConsumer();
+		dataConsumer.setId("DC1");
+		dataConsumer.setType("AA");
+		
+		consentDetail.setDataConsumer(dataConsumer);
+		
+		DataProvider dataProvider = new DataProvider();
+		dataProvider.setId("DP1");
+		dataProvider.setType("FIP");
+		
+		consentDetail.setDataProvider(dataProvider);
+		
+		Customer customer = new Customer();
+		customer.setId("customer@finvu.in");
+		
+		consentDetail.setCustomer(customer);
+		
+		Account acc = new Account();
+		acc.setFiType("DEPOSIT");
+		acc.setFipId("FIP1");
+		acc.setAccType("SAVINGS");
+		acc.setLinkRefNumber("XXXX-XXXX-XXXX");
+		acc.setMaskedAccNumber("XXXXXXXX4020");
+		
+		consentDetail.addAccount(acc);
+		
+		Purpose purpose = new Purpose();
+		
+		purpose.setCode("101");
+		purpose.setRefUri("https://api.rebit.org.in/aa/purpose/101.xml");
+		purpose.setText("Wealth management service");
+		
+		Category cat = new Category();
+		cat.setType("category type");
+		
+		purpose.setCategory(cat);
+		
+		consentDetail.setPurpose(purpose);
+		
+		com.ctpl.rebit.aa.consent.FIDataRange fiDataRange = new com.ctpl.rebit.aa.consent.FIDataRange();
+		
+		fiDataRange.setFrom("2017-07-13T11:33:34.509Z");
+		fiDataRange.setTo("2017-07-13T11:33:34.509Z");
+		
+		consentDetail.setFIDataRange(fiDataRange);
+		
+		DataLife dataLife = new DataLife();
+		
+		dataLife.setUnit("DAY");
+		dataLife.setValue(0);
+		
+		consentDetail.setDataLife(dataLife);
+	
+		Frequency frequency = new Frequency();
+		
+		frequency.setUnit("HOUR");
+		frequency.setValue(1);
+		
+		consentDetail.setFrequency(frequency);
+		
+		DataFilter dataFilter = new DataFilter();
+		
+		dataFilter.setType("TRANSACTIONAMOUNT");
+		dataFilter.setOperator(">=");
+		dataFilter.setValue(20000);
+		
+		consentDetail.addDataFilter(dataFilter);
+		
+		response.setConsentDetail(consentDetail);
+		
+		// Generate consent string for signing.
+		String consentDetailToSign =  mapper.writeValueAsString(consentDetail);
+		
+		// Generate detached content signature.
+		JWSSignatureUtil util = new JWSSignatureUtil();
+		String signature = util.sign(consentDetailToSign);
+		
+		
+		// set the signature to the response.
+		response.setConsentDetailDigitalSignature(signature);
+		
+		ConsentUse consentUse = new ConsentUse();
+		
+		consentUse.setLogUri("loguri string");
+		consentUse.setCount(1);
+		consentUse.setLastUseDateTime("2018-12-06T11:39:57.153Z");
+		
+		response.setConsentUse(consentUse);
+		
+		String consentResponse = mapper.writeValueAsString(response);
+		
+		System.out.println(mapper.writerWithDefaultPrettyPrinter().writeValueAsString(response));
+		
+		
+		// Now on the receiving side, lets validate signature.
+		
+		// first parse and extract the consent detail object.
+		
+		ConsentResponse receiverResponse = mapper.readValue(consentResponse, ConsentResponse.class);
+		
+		String consentDetailString = mapper.writeValueAsString(receiverResponse.getConsentDetail());
+		String signtoValidate = receiverResponse.getConsentDetailDigitalSignature();
+		
+		// now validate the signature.
+		System.out.println("Signature valid?: " + util.validateSign(signtoValidate, consentDetailString));
 	}
 
 }

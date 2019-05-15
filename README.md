@@ -178,3 +178,62 @@ x-jws-signature: eyJhbGciOiJSUzUxMiIsImtpZCI6IjQyNzE5MTNlLTdiOTMtNDlkZC05OTQ5LTF
 ```
 
  As we can see the second method is much simpler and has significant performance advantage over method 1. Hence, Method 2 is recommended.
+ 
+ # Signing and validating consents
+ 
+ Using the Detached Content Signature method explained above, a signature may be generated and attached with the consent response and transmitted to the requester. The requester can then extract the consent artefact and the signature and validate the signature.
+ 
+ The JWSSignatureTest.java class illustrates signing and validating consents. The body of a typical consent response looks like follows:
+ 
+ ```
+ {
+  "ver" : "1.0",
+  "txnid" : "0b811819-9044-4856-b0ee-8c88035f8858",
+  "consentId" : "XXXX-XXXX-XXXX-XXXX",
+  "status" : "ACTIVE",
+  "createTimestamp" : "2018-12-06T11:39:57.153Z",
+  "consentDetail" : {
+    "consentStart" : "2019-12-06T11:39:57.153Z",
+    "consentExpiry" : "2019-12-06T11:39:57.153Z",
+    "consentMode" : "VIEW",
+    "fetchType" : "ONETIME",
+    "fidataRange" : {
+      "from" : "2017-07-13T11:33:34.509Z",
+      "to" : "2017-07-13T11:33:34.509Z"
+    },
+    "purpose" : {
+      "code" : "101",
+      "refUri" : "https://api.rebit.org.in/aa/purpose/101.xml",
+      "text" : "Wealth management service",
+      "category" : {
+        "type" : "category type"
+      }
+    },
+    "customer" : {
+      "id" : "customer@finvu.in"
+    },
+    "dataProvider" : {
+      "id" : "DP1",
+      "type" : "FIP"
+    },
+    "dataLife" : {
+      "unit" : "DAY",
+      "value" : 0.0
+    },
+    "dataConsumer" : {
+      "id" : "DC1",
+      "type" : "AA"
+    },
+    "frequency" : {
+      "unit" : "HOUR",
+      "value" : 1.0
+    }
+  },
+  "consentDetailDigitalSignature" : "eyJhbGciOiJSUzI1NiIsImtpZCI6IjQyNzE5MTNlLTdiOTMtNDlkZC05OTQ5LTFjNzZmZjVmYzVjZiIsImI2NCI6ZmFsc2UsImNyaXQiOlsiYjY0Il19..MEhKhPso6WFRN8E9QNaCuACp2tu8_-Y7uR6wH7Gy9sQbACl8eVvmOKOUGzQNU4q3YVDD7kW81l0u_5sL-xN56wsO-2qOIsxMTnbCR9Vpie5e2WWchNk1yiwjaDhIcUlNK52Yk6QCuU5QJijG5V8SawkYYuMLBSskozFb2KGkucVJyEwXC7V5fkGAU5TdnDtVWee0-NV76xpNJ8q8d4wa1JuroSeaPmjJPpErVl02ohH-9pVDGT76b86XfNyfGdUJy1R73o6YTWUgSXmXk_3yD-bhz_M02Y7j-HHN6zXdMDiaCPnz3tSChR0RENPCRwKPxszSBLDCOBe4a-1YGpw3Kg",
+  "consentUse" : {
+    "logUri" : "loguri string",
+    "count" : 1.0,
+    "lastUseDateTime" : "2018-12-06T11:39:57.153Z"
+  }
+} 
+ ```
