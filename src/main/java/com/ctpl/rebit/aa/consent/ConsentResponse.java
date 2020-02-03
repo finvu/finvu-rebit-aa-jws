@@ -9,8 +9,7 @@ public class ConsentResponse {
 	private String consentId;
 	private String status;
 	private String createTimestamp;
-	private ConsentDetail ConsentDetailObject;
-	private String consentDetailDigitalSignature;
+	private ConsentJWS consent;
 	private ConsentUse ConsentUseObject;
 
 	// Getter Methods
@@ -33,14 +32,6 @@ public class ConsentResponse {
 
 	public String getCreateTimestamp() {
 		return createTimestamp;
-	}
-
-	public ConsentDetail getConsentDetail() {
-		return ConsentDetailObject;
-	}
-
-	public String getConsentDetailDigitalSignature() {
-		return consentDetailDigitalSignature;
 	}
 
 	public ConsentUse getConsentUse() {
@@ -69,15 +60,21 @@ public class ConsentResponse {
 		this.createTimestamp = createTimestamp;
 	}
 
-	public void setConsentDetail(ConsentDetail ConsentDetailObject) {
-		this.ConsentDetailObject = ConsentDetailObject;
-	}
-
-	public void setConsentDetailDigitalSignature(String consentDetailDigitalSignature) {
-		this.consentDetailDigitalSignature = consentDetailDigitalSignature;
-	}
-
 	public void setConsentUse(ConsentUse ConsentUseObject) {
 		this.ConsentUseObject = ConsentUseObject;
+	}
+
+	/**
+	 * @return the consent
+	 */
+	public ConsentJWS getConsent() {
+		return consent;
+	}
+
+	/**
+	 * @param consent the consent to set
+	 */
+	public void setConsent(ConsentJWS consent) {
+		this.consent = consent;
 	}
 }

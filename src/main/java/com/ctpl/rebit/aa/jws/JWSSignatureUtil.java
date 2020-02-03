@@ -25,17 +25,12 @@ public class JWSSignatureUtil {
 				+ "		\"n\":\"pA2LihUAwJ4yO0IwHlY0F0N-oAr9OgCXUL4uryK39PP9f-s0aGL1Q_4sj6AR7xJDivSAlQeW6_yAEjunnNNUl45Su1m2n9LX2YyuU4-4UzCq2c-1oMcQ9ChmYZ9k2HyWxRUZjVlnIiHHXNGrVvdGRAR7Z7kMrGq1pdPv35oPKZO1YM9nmsjUOUlPgQSwOSGYokNjT96QCOWElid_C6gRwtMc6YyVLXEXYj16xR_OqDWSyEbUO7P1xrZh4b-ekvahL2so1aH6_aqyP70RG2y8zC-oREd1v3MnsMGSjlGjGSifo21hYYXW45OEp5-ygFhBOM0SMhP0O_5rM7tsgO6cZw\"\r\n"
 				+ "	}\r\n" + "  ]\r\n" + "}");
 	}
-
-	/**
-	 * This method generates a detached json web signature,
-	 * Using the RFC 7797 JWS Unencoded Payload Option
-	 * 
-	 * @param payload
-	 * @return signature without the payload (i.e. detached signature)
-	 * @throws Exception
-	 */
-	public String sign(String payload) throws Exception {
-
+	
+	public String signEmbedded(String payload) throws Exception {
+		return doSign(payload, false);
+	}
+	
+	private String doSign(String payload, boolean detached) throws Exception {
 		// Create a new JsonWebSignature object for the signing
 		JsonWebSignature signerJws = new JsonWebSignature();
 
@@ -63,7 +58,23 @@ public class JWSSignatureUtil {
 
 		// Produce the compact serialization with an empty/detached payload,
 		// which is the encoded header + ".." + the encoded signature
-		return signerJws.getDetachedContentCompactSerialization();
+		if(detached) {
+			return signerJws.getDetachedContentCompactSerialization();	
+		} else {
+			return signerJws.getCompactSerialization();
+		}
+	}
+
+	/**
+	 * This method generates a detached json web signature,
+	 * Using the RFC 7797 JWS Unencoded Payload Option
+	 * 
+	 * @param payload
+	 * @return signature without the payload (i.e. detached signature)
+	 * @throws Exception
+	 */
+	public String sign(String payload) throws Exception {
+		return doSign(payload, true);
 	}
 
 	/**
@@ -73,7 +84,7 @@ public class JWSSignatureUtil {
 	 * @param payload
 	 * @throws Exception - if signature validation fails.
 	 */
-	public boolean validateSign(String detachedSignature, String payload) throws Exception {
+	public JsonWebSignature parseSign(String detachedSignature, String payload) throws Exception {
 
 		// Use a JsonWebSignature object to verify the signature
 		JsonWebSignature verifierJws = new JsonWebSignature();
@@ -83,11 +94,16 @@ public class JWSSignatureUtil {
 		verifierJws.setAlgorithmConstraints(new AlgorithmConstraints(AlgorithmConstraints.ConstraintType.WHITELIST,
 				AlgorithmIdentifiers.RSA_USING_SHA256));
 
-		// The JWS with detached content is the compact serialization
-		verifierJws.setCompactSerialization(detachedSignature);
+		if(payload == null) {
+			// The JWS with embedded content is the compact serialization
+			verifierJws.setCompactSerialization(detachedSignature);
+		} else {
+			// The JWS with detached content is the compact serialization
+			verifierJws.setCompactSerialization(detachedSignature);
 
-		// The unencoded detached content is the payload
-		verifierJws.setPayload(payload);
+			// The unencoded detached content is the payload
+			verifierJws.setPayload(payload);
+		}
 
 		VerificationJwkSelector jwkSelector = new VerificationJwkSelector();
 		RsaJsonWebKey jwk = (RsaJsonWebKey) jwkSelector.select(verifierJws, rsaJsonWebKeySet.getJsonWebKeys());
@@ -95,9 +111,9 @@ public class JWSSignatureUtil {
 		// The public key is used to verify the signature
 		// This should be the public key of the sender.
 		verifierJws.setKey(jwk.getPublicKey());
-
-		// Check the signature
-		return verifierJws.verifySignature();
+		
+		// return the jws.
+		return verifierJws;
 	}
 
 	private RsaJsonWebKey getJsonWebKey() {
