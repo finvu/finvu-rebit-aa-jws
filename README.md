@@ -132,7 +132,7 @@ x-jws-signature: eyJhbGciOiJSUzUxMiIsImtpZCI6IjQyNzE5MTNlLTdiOTMtNDlkZC05OTQ5LTF
 
  As we can see this method is much simpler and has significant performance advantages, so it is recommended to use this method for all API request/responses.
  
- ## Points to note when using this method:
+ #### Points to note when using this method:
  * Signature must be generated AFTER serializing the JSON object, in other words, the signature should be generated on the textual representation of the JSON which will be sent in the http request.
  * Signature must be validated BEFORE de-serializing the text into json object. In other words, the signature must be validated against the textual representation of the JSON as received in the http request.
  
