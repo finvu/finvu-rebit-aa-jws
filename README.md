@@ -68,7 +68,7 @@ Examples can be seen in section 4.5 of rfc7520 here: https://tools.ietf.org/html
 
 In the method explained below, Detached Content signature is used.
 
-### Send API Request content in the http body, send signature in http header:
+## Sending API Request content in the http body, send signature in http header:
 
 In this method, the content can be sent as text in the body of the http message, and the signature can be sent separately in customized http header of the same http request/response.
 
@@ -132,11 +132,11 @@ x-jws-signature: eyJhbGciOiJSUzUxMiIsImtpZCI6IjQyNzE5MTNlLTdiOTMtNDlkZC05OTQ5LTF
 
  As we can see this method is much simpler and has significant performance advantages, so it is recommended to use this method for all API request/responses.
  
- #### Points to note when using this method:
+### Points to note when using this method:
  * Signature must be generated AFTER serializing the JSON object, in other words, the signature should be generated on the textual representation of the JSON which will be sent in the http request.
  * Signature must be validated BEFORE de-serializing the text into json object. In other words, the signature must be validated against the textual representation of the JSON as received in the http request.
  
-### Signing and validating consents
+## Signing and validating consents
  
  In the AA ecosystem, Consents are signed artefacts authorizing a FIU to request for data with an FIP.
  
