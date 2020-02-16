@@ -1,6 +1,6 @@
 # Signing AA ecosystem API Request/Response and Consent Artefacts
 
-The REBIT AA ecosystem APIs (https://api.rebit.org.in/) have certain APIs that require signing the request/response before sending, and the receiver needs to validate the signature before honoring such request/responses.
+The REBIT AA ecosystem APIs (https://api.rebit.org.in/) have certain APIs that require signing the request/response before sending, and the receiver needs to verify the signature before honoring such request/responses.
 
 Here we present platform/language neutral methods to sign content so that the AA ecosystem partners can inter-operate.
 
@@ -45,7 +45,7 @@ Sample used:
 
 We use Json Web Signature (JWS) method to sign the content, as descirbed in RFC7515 here: https://www.rfc-editor.org/rfc/rfc7515.txt
 
-As described in the RFC, a JWS contains 3 sections, i.e. A header, the content and the signature. All sections are base64 encoded. JWS is typically transmitted in JSON Serialization format, which is represented as 3 base64 encodes strings as a continuous string, each string separated by a dot.
+As described in the RFC, a JWS contains 3 sections, i.e. A header, the content and the signature. All sections are base64 encoded. JWS is typically transmitted in JSON Serialization format, which is represented as 3 base64 encoded strings as a continuous string, each string separated by a dot.
 
 As per the REBIT specifications, the content is already being sent in the http body of the message, hence including content in the JWS will be  duplication of data and inefficient.
 
@@ -70,28 +70,28 @@ In the method explained below, Detached Content signature is used.
 
 ## Sending API Request content in the http body, send signature in http header:
 
-In this method, the content can be sent as text in the body of the http message, and the signature can be sent separately in customized http header of the same http request/response.
+In this method, the content can be sent as plain text in the body of the http message, and the signature can be sent separately in customized http header of the same http request/response.
 
 Open banking uses x-jws-signature as the http header to set the signature.
 
 This method has several advantages:
 
 * request/responses that that have badly formatted x-jws-signature header can be rejected before ever reading the full HTTP body
-* The http body need not be parsed to validate signature
+* The http body need not be parsed to verify signature
 * Gives more options to keep the message signing away from business logic as the HTTP body needs no manipulation
 * No unnecessary serialization/deserialization of objects for generating and embeddeding signature
 
 In this method, following steps are performed:
 
-* The content to sign if is in object form, is serialized to text
+* The content to sign if is in object form, is serialized to plain text
 * A detached content signature is then generated for the text
-* The signature is set in the http header, and the text is sent as http body.
+* The signature is set in the http header, and the plain text is sent as http body.
 * The request is then sent to the receiver.
  
 * On the receiving side:
 * The receiver extracts the signature from header
-* The receiver extract the text from body of the http post request
-* The receiver uses the detached signature and text to validate the signature.
+* The receiver extract the plain text from body of the http post request
+* The receiver uses the detached signature and plain text to verify the signature.
 
 A typical HTTP request using this method should look like the following):
 
@@ -133,26 +133,26 @@ x-jws-signature: eyJhbGciOiJSUzUxMiIsImtpZCI6IjQyNzE5MTNlLTdiOTMtNDlkZC05OTQ5LTF
  As we can see this method is much simpler and has significant performance advantages, so it is recommended to use this method for all API request/responses.
  
 ### Points to note when using this method:
- * Signature must be generated AFTER serializing the JSON object, in other words, the signature should be generated on the textual representation of the JSON which will be sent in the http request.
- * Signature must be validated BEFORE de-serializing the text into json object. In other words, the signature must be validated against the textual representation of the JSON as received in the http request.
+ * Signature must be generated AFTER serializing the JSON object, in other words, the signature should be generated on the plain text representation of the JSON which will be sent in the http request.
+ * Signature must be verified BEFORE de-serializing request/response into JSON object. In other words, the signature must be verified against the plain text representation of the JSON as received in the http request.
  
-## Signing and validating consents
+## Signing and verifying signature in consents
  
  In the AA ecosystem, Consents are signed artefacts authorizing a FIU to request for data with an FIP.
  
- Consents must be transmitted with every FI Request to the Account Aggregator by FIU. Hence it is important for an AA to generate a consent artefact with signature that can be validated by the FIP before honoring the request.
+ Consents must be transmitted with every FI Request to the Account Aggregator by FIU. Hence it is important for an AA to generate a consent artefact with signature that can be verified by the FIP before honoring the request.
  
  Since the consents are embedded within the FI Request, it is recommended to use JWS compact serilization (i.e. a JWS with embedded content) and embed the JWS itself in the FI Request.
  
- Since the JWS already has the consent embedded, there is no need to include the cleartext consent artefact.
+ Since the JWS already has the consent embedded, there is no need to include the plain text consent artefact.
  
- Since the JWS is already is encoded and is in the compact serialized format, there is no need to reserialize the consent artefact (after extracting from the de-serialized API request) to validate signature which almost certainly would lead to incorrect signature validation.
+ Since the JWS is already is base64 encoded and is in the 'compact serialized' format, there is no need to extract, prase and convert consent artefact to plain text to verify signature as that would certainly lead to incorrect signature verification.
  
- The requester can extract the consent artefact JWS and simply validate it using any standard json JWS processing library.
+ The entity verifying the consent artefact signature can extract the consent artefact JWS and simply verify it using any standard json JWS processing libraries.
  
- Once signature is validated, the requester can extract the base64 encoded content payload and de-serialize it if required for further processing and validation.
+ Once signature is verified, the requester can extract the base64 encoded content payload from the JWS and convert to object if required for further processing and validation.
  
- The JWSSignatureTest.java class illustrates signing and validating consents. The body of a typical consent response looks like this:
+ The JWSSignatureTest.java class illustrates signing and verifying signature of consents. The body of a typical consent response looks like this:
  
  ```
  {
