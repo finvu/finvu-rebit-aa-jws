@@ -212,3 +212,20 @@ x-jws-signature: eyJhbGciOiJSUzUxMiIsImtpZCI6IjQyNzE5MTNlLTdiOTMtNDlkZC05OTQ5LTF
 	}
 }
 ```
+## JOSE Header requirements
+When signing API requests and consents, following claims must be included by the signing entity in the JWS header section. The receiving entity must use these fields to correctly identify the certificate for verifying the signature.
+
+| claim | Required | Description |
+| --- | --- | --- |
+| alg | Yes | The algorithm that will be used for signing the JWS. This must be RS256
+| kid | Yes | Key id. This parameter indicates which key was used to sign the JWS. The verifying entity must use this to identify the certificate for verifying the signature. The kid must be a globally unique identifier. UUID may be used when generating the certificate by the signing entity. When submitting the certificate to the central registry, this kid must be used against the certificate.
+
+### Example:
+```
+{
+  "alg": "RS256",
+  "kid": "4271913e-7b93-49dd-9949-1c76ff5fc5cf"
+}
+```
+
+
