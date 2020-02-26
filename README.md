@@ -218,7 +218,7 @@ When signing API requests and consents, following claims must be included by the
 | claim | Required | Description |
 | --- | --- | --- |
 | alg | Yes | The algorithm that will be used for signing the JWS. This must be RS256
-| kid | Yes | Key id. This parameter indicates which key was used to sign the JWS. The verifying entity must use this to identify the certificate for verifying the signature. The kid must be a globally unique identifier. UUID may be used when generating the certificate by the signing entity. When submitting the certificate to the central registry, this kid must be used against the certificate.
+| kid | Yes | Key id. This parameter indicates which key was used to sign the JWS. The verifying entity must use this to identify the certificate for verifying the signature. The kid must be a globally unique identifier. UUID may be used when generating the certificate by the signing entity. When submitting the certificate to the central registry, this kid must be specified for the certificate.
 
 ### Example:
 ```
