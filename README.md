@@ -116,7 +116,7 @@ x-jws-signature: eyJhbGciOiJSUzUxMiIsImtpZCI6IjQyNzE5MTNlLTdiOTMtNDlkZC05OTQ5LTF
     "from": "2018-11-27T06:26:29.761Z",
     "to": "2018-12-27T06:26:29.761Z"
   },
-  "KeyMaterials": {
+  "KeyMaterial": {
     "cryptoAlg": "ECDHE",
     "curve": "Curve25519",
     "params": "string",
@@ -161,9 +161,7 @@ x-jws-signature: eyJhbGciOiJSUzUxMiIsImtpZCI6IjQyNzE5MTNlLTdiOTMtNDlkZC05OTQ5LTF
   "consentId" : "XXXX-XXXX-XXXX-XXXX",
   "status" : "ACTIVE",
   "createTimestamp" : "2018-12-06T11:39:57.153Z",
-  "consent" : {
-    "consentJWS" : "eyJhbGciOiJSUzI1NiIsImtpZCI6IjQyNzE5MTNlLTdiOTMtNDlkZC05OTQ5LTFjNzZmZjVmYzVjZiIsImI2NCI6ZmFsc2UsImNyaXQiOlsiYjY0Il19.eyJjb25zZW50U3RhcnQiOiIyMDE5LTEyLTA2VDExOjM5OjU3LjE1M1oiLCJjb25zZW50RXhwaXJ5IjoiMjAxOS0xMi0wNlQxMTozOTo1Ny4xNTNaIiwiY29uc2VudE1vZGUiOiJWSUVXIiwiZmV0Y2hUeXBlIjoiT05FVElNRSIsInB1cnBvc2UiOnsiY29kZSI6IjEwMSIsInJlZlVyaSI6Imh0dHBzOi8vYXBpLnJlYml0Lm9yZy5pbi9hYS9wdXJwb3NlLzEwMS54bWwiLCJ0ZXh0IjoiV2VhbHRoIG1hbmFnZW1lbnQgc2VydmljZSIsImNhdGVnb3J5Ijp7InR5cGUiOiJjYXRlZ29yeSB0eXBlIn19LCJkYXRhTGlmZSI6eyJ1bml0IjoiREFZIiwidmFsdWUiOjAuMH0sImZyZXF1ZW5jeSI6eyJ1bml0IjoiSE9VUiIsInZhbHVlIjoxLjB9LCJkYXRhUHJvdmlkZXIiOnsiaWQiOiJEUDEiLCJ0eXBlIjoiRklQIn0sImRhdGFDb25zdW1lciI6eyJpZCI6IkRDMSIsInR5cGUiOiJBQSJ9LCJjdXN0b21lciI6eyJpZCI6ImN1c3RvbWVyQGZpbnZ1LmluIn0sImZpZGF0YVJhbmdlIjp7ImZyb20iOiIyMDE3LTA3LTEzVDExOjMzOjM0LjUwOVoiLCJ0byI6IjIwMTctMDctMTNUMTE6MzM6MzQuNTA5WiJ9fQ.NdjwMjLortTb10dxcJezkvdOxPVvEdZvIqwqVWOHnE8pS_YDswcRPLTRmds2xO-Tvm_A2cFv1qKYpaZnv8Bl6xmZoOsG_F8_40gRZqIhz5hF9puzp8lEEhMlZ6NaX2Y2OYkwHcOBBpCIXpLXB4CMWiefUEWjO9zKDd5JJwZ4vLWeT4qgwvPfRqE60B33tzVlF5E6OA2mKK17sGRXsfrI9obEjL52RMdGo_9bv1HnHfvPlbj5ihj6d_5iTtoh7HUC_X8CrJGvkgkCjP_7of1jPb5QgJ9nx_Yfsxj3vf8zEseZIVISjF3MwBzW7Di4CpfQl4wlnpkQO9MKu78F69Z9Ig"
-  },
+  "signedConsent" : "eyJhbGciOiJSUzI1NiIsImtpZCI6ImY2NzZiNjg4LTA3YTItNDUwYi1hYmI1LTU3ZmJiOThlY2FiZSIsImI2NCI6ZmFsc2UsImNyaXQiOlsiYjY0Il19.eyJjb25zZW50U3RhcnQiOjE1ODYxNjYxMjQ4NjcsImNvbnNlbnRFeHBpcnkiOjE2MTc2MTU3MjIzMTQsImNvbnNlbnRNb2RlIjoiVklFVyIsImZldGNoVHlwZSI6IlBFUklPRElDIiwiY29uc2VudFR5cGVzIjpbIlNVTU1BUlkiLCJUUkFOU0FDVElPTlMiLCJQUk9GSUxFIl0sImZpVHlwZXMiOlsiREVQT1NJVCIsIlRFUk0tREVQT1NJVCJdLCJEYXRhQ29uc3VtZXIiOnsiaWQiOiJjb29raWVqYXItYWFAZmludnUuaW4iLCJ0eXBlIjoiQUEifSwiRGF0YVByb3ZpZGVyIjp7ImlkIjoiQkFSQjBLSU1YWFgiLCJ0eXBlIjoiRklQIn0sIkN1c3RvbWVyIjp7ImlkIjoiamF5QGZpbnZ1In0sIkFjY291bnRzIjpbeyJmaVR5cGUiOiJERVBPU0lUIiwiZmlwSWQiOiJCQVJCMEtJTVhYWCIsImFjY1R5cGUiOiJDVVJSRU5UIiwibGlua1JlZk51bWJlciI6IjAzOTQ4ODU2NjY4ODAwIiwibWFza2VkQWNjTnVtYmVyIjoiWFhYWFhYWFhYODAwMCJ9XSwiUHVycG9zZSI6eyJjb2RlIjoiMTAyIiwicmVmVXJpIjoiaHR0cHM6Ly9hcGkucmViaXQub3JnLmluL2FhL3B1cnBvc2UvMTAyLnhtbCIsInRleHQiOiJQZXJzb25hbCBGaW5hbmNlIE1hbmFnZW1lbnQiLCJDYXRlZ29yeSI6eyJ0eXBlIjoicHVycG9zZUNhdGVnb3J5VHlwZSJ9fSwiRklEYXRhUmFuZ2UiOnsiZnJvbSI6MTU3MDQ0MTMyMjMxNCwidG8iOjE1ODYxNjYxMjQ4Njd9LCJEYXRhTGlmZSI6eyJ1bml0IjoiWUVBUiIsInZhbHVlIjoxfSwiRnJlcXVlbmN5Ijp7InVuaXQiOiJEQVkiLCJ2YWx1ZSI6MX0sIkRhdGFGaWx0ZXIiOlt7InR5cGUiOiJUUkFOU0FDVElPTkFNT1VOVCIsIm9wZXJhdG9yIjoiPiIsInZhbHVlIjoiMTAifV19.UnthBM3KTz8S0K9jk6UfOOCYsSwQ4BZgc5c7P1HmL_h1czqpx91xXG94BgMlOpMdDHnmmpPNdxP5GMVrHiqjwwMaRZ_5UG_ySA5UoeBllOFrX2z_dyRMOrg4EUMyq3YT3KWjHR7RtOe4zrQmKzbbaPgpPca-6aSINag51Isbof4crDK-gj1S2yMyHj6JMAIvJLi9ypuOVFk4uO6Wld-XZ0BR_XNLBVccCEzT5TFB7lnzRRuuRPzMluhQgv_t2IWbSOBTvtWYm4ktllYoTiWa1ab6xOX-l3Z_OF8rhVHq5eDxhVPxYyXdJMBEWejw6G9G02ez0pIKJ0Sc2O-_wIKgmg",
   "consentUse" : {
     "logUri" : "loguri string",
     "count" : 1.0,
@@ -175,41 +173,66 @@ x-jws-signature: eyJhbGciOiJSUzUxMiIsImtpZCI6IjQyNzE5MTNlLTdiOTMtNDlkZC05OTQ5LTF
  
 ```
 {
-	"consentStart": "2019-12-06T11:39:57.153Z",
-	"consentExpiry": "2019-12-06T11:39:57.153Z",
+	"consentStart": 1586166124867,
+	"consentExpiry": 1617615722314,
 	"consentMode": "VIEW",
-	"fetchType": "ONETIME",
-	"fidataRange": {
-		"from": "2017-07-13T11:33:34.509Z",
-		"to": "2017-07-13T11:33:34.509Z"
-	},
-	"frequency": {
-		"unit": "HOUR",
-		"value": 1.0
-	},
-	"purpose": {
-		"code": "101",
-		"refUri": "https://api.rebit.org.in/aa/purpose/101.xml",
-		"text": "Wealth management service",
-		"category": {
-			"type": "category type"
-		}
-	},
-	"dataConsumer": {
-		"id": "DC1",
+	"fetchType": "PERIODIC",
+	"consentTypes": [
+		"SUMMARY",
+		"TRANSACTIONS",
+		"PROFILE"
+	],
+	"fiTypes": [
+		"DEPOSIT",
+		"TERM-DEPOSIT"
+	],
+	"DataConsumer": {
+		"id": "cookiejar-aa@finvu.in",
 		"type": "AA"
 	},
-	"dataLife": {
-		"unit": "DAY",
-		"value": 0.0
-	},
-	"customer": {
-		"id": "customer@finvu.in"
-	},
-	"dataProvider": {
-		"id": "DP1",
+	"DataProvider": {
+		"id": "BARB0KIMXXX",
 		"type": "FIP"
-	}
+	},
+	"Customer": {
+		"id": "jay@finvu"
+	},
+	"Accounts": [
+		{
+			"fiType": "DEPOSIT",
+			"fipId": "BARB0KIMXXX",
+			"accType": "CURRENT",
+			"linkRefNumber": "03948856668800",
+			"maskedAccNumber": "XXXXXXXXX8000"
+		}
+	],
+	"Purpose": {
+		"code": "102",
+		"refUri": "https://api.rebit.org.in/aa/purpose/102.xml",
+		"text": "Personal Finance Management",
+		"Category": {
+			"type": "purposeCategoryType"
+		}
+	},
+	"FIDataRange": {
+		"from": 1570441322314,
+		"to": 1586166124867
+	},
+	"DataLife": {
+		"unit": "YEAR",
+		"value": 1
+	},
+	"Frequency": {
+		"unit": "DAY",
+		"value": 1
+	},
+	"DataFilter": [
+		{
+			"type": "TRANSACTIONAMOUNT",
+			"operator": ">",
+			"value": "10"
+		}
+	]
 }
 ```
 ## JOSE Header requirements
@@ -220,11 +243,15 @@ When signing API requests and consents, following claims must be included by the
 | alg | Yes | The algorithm that will be used for signing the JWS. This must be RS256
 | kid | Yes | Key id. This parameter indicates which key was used to sign the JWS. The verifying entity must use this to identify the certificate for verifying the signature. The kid must be a globally unique identifier. UUID may be used when generating the certificate by the signing entity. When submitting the certificate to the central registry, this kid must be specified for the certificate.
 
-### Example:
+### JOSE Header Example:
 ```
 {
-  "alg": "RS256",
-  "kid": "4271913e-7b93-49dd-9949-1c76ff5fc5cf"
+	"alg": "RS256",
+	"kid": "f676b688-07a2-450b-abb5-57fbb98ecabe",
+	"b64": false,
+	"crit": [
+		"b64"
+	]
 }
 ```
 
