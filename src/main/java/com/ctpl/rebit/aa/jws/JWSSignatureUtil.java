@@ -51,16 +51,15 @@ public class JWSSignatureUtil {
 		// Set the "b64" header to false, which indicates that the payload is not
 		// encoded
 		// when calculating the signature (per RFC 7797)
-		signerJws.getHeaders().setObjectHeaderValue(HeaderParameterNames.BASE64URL_ENCODE_PAYLOAD, false);
-
-		// RFC 7797 requires that the "b64" header be listed as critical
-		signerJws.setCriticalHeaderNames(HeaderParameterNames.BASE64URL_ENCODE_PAYLOAD);
+		signerJws.getHeaders().setObjectHeaderValue(HeaderParameterNames.BASE64URL_ENCODE_PAYLOAD, !detached);
 
 		// Produce the compact serialization with an empty/detached payload,
 		// which is the encoded header + ".." + the encoded signature
 		if(detached) {
 			return signerJws.getDetachedContentCompactSerialization();	
 		} else {
+			// RFC 7797 requires that the "b64" header be listed as critical
+			signerJws.setCriticalHeaderNames(HeaderParameterNames.BASE64URL_ENCODE_PAYLOAD);
 			return signerJws.getCompactSerialization();
 		}
 	}

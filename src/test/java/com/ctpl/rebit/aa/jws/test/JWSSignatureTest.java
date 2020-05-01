@@ -36,8 +36,8 @@ public class JWSSignatureTest {
 		    "from": "2018-11-27T06:26:29.761Z",
 		    "to": "2018-12-27T06:26:29.761Z"
 		  },
-		  "KeyMaterials": {
-		    "cryptoAlg": "ECDHE",
+		  "KeyMaterial": {
+		    "cryptoAlg": "ECDH",
 		    "curve": "Curve25519",
 		    "params": "string",
 		    "DHPublicKey": {
@@ -61,8 +61,8 @@ public class JWSSignatureTest {
 			"    \"from\": \"2018-11-27T06:26:29.761Z\",\r\n" + 
 			"    \"to\": \"2018-12-27T06:26:29.761Z\"\r\n" + 
 			"  },\r\n" + 
-			"  \"KeyMaterials\": {\r\n" + 
-			"    \"cryptoAlg\": \"ECDHE\",\r\n" + 
+			"  \"KeyMaterial\": {\r\n" + 
+			"    \"cryptoAlg\": \"ECDH\",\r\n" + 
 			"    \"curve\": \"Curve25519\",\r\n" + 
 			"    \"params\": \"string\",\r\n" + 
 			"    \"DHPublicKey\": {\r\n" + 
