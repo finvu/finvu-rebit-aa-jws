@@ -122,7 +122,7 @@ public class JWSSignatureTest {
 		System.out.println("Request to vaidate is: " + bodyToSign);
 		System.out.println("Signature is: " + signature);
 		System.out.println();
-		System.out.println("#######Signature valid?: " + util.parseSign(signature, bodyToSign));
+		System.out.println("#######Signature valid?: " + util.parseSign(signature, bodyToSign).verifySignature());
 	}
 	
 	/**
