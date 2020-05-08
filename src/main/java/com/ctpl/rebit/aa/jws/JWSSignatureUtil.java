@@ -7,6 +7,7 @@ import org.jose4j.jwk.VerificationJwkSelector;
 import org.jose4j.jws.AlgorithmIdentifiers;
 import org.jose4j.jws.JsonWebSignature;
 import org.jose4j.jwx.HeaderParameterNames;
+import org.jose4j.lang.JoseException;
 
 public class JWSSignatureUtil {
 
@@ -111,7 +112,11 @@ public class JWSSignatureUtil {
 		// This should be the public key of the sender.
 		verifierJws.setKey(jwk.getPublicKey());
 		
-		// return the jws.
+		if(!verifierJws.verifySignature()) {
+			throw new JoseException("Signature verification failed.");
+		}
+		
+		// return the jws
 		return verifierJws;
 	}
 
